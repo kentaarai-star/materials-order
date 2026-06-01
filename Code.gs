@@ -1,4 +1,4 @@
-const SPREADSHEET_ID = '1pbvVaTck_WnpcQumi5w0btU5iAP7OAnlCyklsTqT9eY';
+const SPREADSHEET_ID = '1t4FVLJGOXt7D0gOVdSNABCmXdSB4Mz3tqTv6zM6jzwQ';
 const SHEET_NAME = 'NOTE';
 
 function doGet() {
@@ -8,6 +8,13 @@ function doGet() {
 }
 
 function getSpreadsheet() {
+  try {
+    // Try to get as container-bound
+    const activeSS = SpreadsheetApp.getActiveSpreadsheet();
+    if (activeSS) return activeSS;
+  } catch (e) {
+    console.warn('Not container bound, falling back to ID');
+  }
   return SpreadsheetApp.openById(SPREADSHEET_ID);
 }
 
@@ -39,7 +46,7 @@ function getNotes() {
         color: row[3],
         iconColor: row[4],
         userEmail: row[5],
-        createdAt: row[6].toString() // Convert Date to string for client-side
+        createdAt: row[6].toString()
       };
     });
 }
